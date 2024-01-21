@@ -27,7 +27,7 @@ function SingUp () {
     async function singUp() {
         const res = await api.singUp(userData)
         saveToken(res.token)
-        saveUser({ ...res.user, ...res.token })
+        saveUser({ ...res.user, token: res.token })
     }
 
     function handleInput(evt) {

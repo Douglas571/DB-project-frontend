@@ -3,11 +3,13 @@ import { useLocalStorage } from "@uidotdev/usehooks"
 
 function Menu() {
     const [token, setToken] = useLocalStorage("token", null)
-    const [user, saveUser] = useLocalStorage('user', null)
+    const [user, setUser] = useLocalStorage('user', null)
+
+    console.log({userLayout: user})
 
     function logout() {
         setToken(null)
-        saveUser(null)
+        setUser(null)
     }
 
     return (

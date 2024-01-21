@@ -18,7 +18,7 @@ export async function singin(credentials) {
     ...credentials,
   });
 
-  return res.data.token;
+  return { ...res.data };
 }
 
 export async function saveNewRoutine(newRoutine) {

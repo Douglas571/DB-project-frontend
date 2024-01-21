@@ -11,8 +11,8 @@ function SingIn () {
     const [user, saveUser] = useLocalStorage("user", null)
 
     const [credentials, setCredentials] = useState({
-        username: 'fakeUser',
-        password: 'fakePassword'
+        username: 'douglas',
+        password: '12345'
     })
 
     useEffect(() => {
@@ -23,8 +23,9 @@ function SingIn () {
 
     async function singIn () {
         const res = await api.singin(credentials)       
+        console.log({res})
         saveToken(res.token)
-        saveUser({ ...res.user, ...res.token })
+        saveUser({ ...res.user, token: res.token })
     }
 
     function handleInput(evt) {

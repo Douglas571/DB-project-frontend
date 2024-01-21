@@ -3,6 +3,7 @@ import { create } from "zustand";
 import * as api from "@/util/api";
 
 const useStore = create((set, get) => ({
+  user: {},
   routines: [
     {
       _id: 0,
@@ -63,6 +64,10 @@ const useStore = create((set, get) => ({
       reps: [5, 3, 1],
     },
   ],
+  setUser: (user) => {
+    console.log({ user });
+    console.log({ userInit: user });
+  },
   getRoutine: (id) => {
     return get().routines.find((routine) => routine._id === Number(id));
   },
@@ -84,12 +89,12 @@ const useStore = create((set, get) => ({
   },
 
   saveNewRoutine: async (newRoutine) => {
-    console.log({ newRoutine });
+    console.log({ newRoutine, user: get().user.username });
 
-    const res = await api.saveRoutine(newRoutine);
+    // const res = await api.saveRoutine(newRoutine, get().user.username);
     // TODO: Search for the userID and save the routine
 
-    set((state) => ({ routines: [...state.routines, newRoutine] }));
+    // set((state) => ({ routines: res.routines }));
   },
 }));
 
