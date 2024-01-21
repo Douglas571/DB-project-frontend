@@ -1,7 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
 
 import MainLayout from './layout/main';
 
@@ -11,8 +9,10 @@ import SingIn from './pages/singin'
 
 import UserHome from './pages/user'
 
-import Exercises from './pages/exercises'
 import Routines from './pages/routines'
+import RoutinesView from './pages/routinesView'
+import RoutineExerciseView from './pages/routineExerciseView'
+
 
 import {
   createBrowserRouter,
@@ -43,13 +43,17 @@ const router = createBrowserRouter([
         element: <UserHome/>
       },
       {
-        path: '/exercises',
-        element: <Exercises/>
-      },
-      {
         path: '/routines',
         element: <Routines/>
-      }
+      },
+      {
+        path: '/routines/:id',
+        element: <RoutinesView/>
+      },
+      {
+        path: '/routines/:id/exercise/:exerciseID',
+        element: <RoutineExerciseView/>
+      },
     ]
   }
 ])

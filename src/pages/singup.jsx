@@ -1,7 +1,14 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import { useLocalStorage } from "@uidotdev/usehooks"
+
 import * as api from '@/util/api'
 
 function SingUp () {
+    const navigate = useNavigate()
+    
+    const [token, saveToken] = useLocalStorage("token", null)
+    const [_, saveUser] = useLocalStorage("user", null)
 
     const [userData, setUserData] = useState({
         username: 'randomguy' + Date.now(),
@@ -10,10 +17,17 @@ function SingUp () {
         weight_kg: 0,
         height_cm: 0
     })
+
+    useEffect(() => {
+        if (token) {
+            navigate('/user')
+        }
+    })
     
     async function singUp() {
         const res = await api.singUp(userData)
-        console.log(res)
+        saveToken(res.token)
+        saveUser({ ...res.user, ...res.token })
     }
 
     function handleInput(evt) {

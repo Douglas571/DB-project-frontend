@@ -8,6 +8,12 @@ function SingIn () {
     const navigate = useNavigate()
 
     const [token, saveToken] = useLocalStorage("token", null)
+    const [user, saveUser] = useLocalStorage("user", null)
+
+    const [credentials, setCredentials] = useState({
+        username: 'fakeUser',
+        password: 'fakePassword'
+    })
 
     useEffect(() => {
         if (token) {
@@ -15,10 +21,16 @@ function SingIn () {
         }
     })
 
-    function singIn () {
-        console.log({token})
+    async function singIn () {
+        const res = await api.singin(credentials)       
+        saveToken(res.token)
+        saveUser({ ...res.user, ...res.token })
+    }
 
-        
+    function handleInput(evt) {
+        const { name, value } = evt.target
+        // console.log({name, value})
+        setCredentials({...credentials, [name]: value})
     }
 
     return (
@@ -28,10 +40,10 @@ function SingIn () {
             <label>
                 Nombre de Usuario:
                 <input 
-                    // value={userData.username}
+                    value={credentials.username}
                     type='text' 
                     name='username' 
-                    // onChange={handleInput}
+                    onChange={handleInput}
                 />
             </label>
             </div>
@@ -39,10 +51,10 @@ function SingIn () {
                 <label>
                     Contraseña: 
                     <input 
-                        // value={userData.password}
+                        value={credentials.password}
                         type='text' 
                         name='password' 
-                        // onChange={handleInput}
+                        onChange={handleInput}
                     />
                 </label>
             </div>

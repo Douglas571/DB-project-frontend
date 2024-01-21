@@ -1,27 +1,27 @@
+import axios from "axios";
 
-const HOST = 'http://localhost:8080'
+const HOST = "http://127.0.0.1:8000";
 
 export async function singUp(newUser) {
-    const res = await fetch(`${HOST}/singup`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(newUser)
-    })
+  const res = await axios.post(`${HOST}/singup`, {
+    username: newUser.username,
+    password: newUser.password,
+  });
 
-    const resJson = await res.json()
+  console.log({ res });
 
-    return resJson
+  return res.data;
 }
 
-export async function login(newUser) {
-    const res = await fetch(`${HOST}/singin`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(newUser)
-    })
+export async function singin(credentials) {
+  const res = await axios.post(`${HOST}/singin`, {
+    ...credentials,
+  });
+
+  return res.data.token;
 }
-    // TODO: Develope the loging singIn features
+
+export async function saveNewRoutine(newRoutine) {
+  // create the routine axios code...
+}
+// TODO: Develope the loging singIn features
