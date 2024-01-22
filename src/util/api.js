@@ -21,7 +21,59 @@ export async function singin(credentials) {
   return { ...res.data };
 }
 
-export async function saveNewRoutine(newRoutine) {
-  // create the routine axios code...
+export async function addNewRoutine(user, newRoutine) {
+  let data;
+  let res;
+  let err;
+
+  try {
+    res = await axios.post(`${HOST}/routines`, {
+      user_id: user.username,
+      ...newRoutine,
+    });
+    data = res.data.routines;
+  } catch (error) {
+    console.log({ error });
+
+    err = error.response.data.detail;
+  }
+
+  console.log({ addNewRouteRes: res });
+
+  return { data, err };
 }
-// TODO: Develope the loging singIn features
+
+export async function getRoutines(user) {
+  let res;
+  let err;
+
+  try {
+    res = await axios.get(`${HOST}/routines`);
+  } catch (e) {
+    console.log({ e });
+    err = e.response.data.detail;
+  }
+
+  console.log({ routineAPI: res });
+
+  return { data: res.data, err };
+}
+
+export async function saveExercise(newExercise, routine_id) {
+  let res;
+  let err;
+
+  try {
+    res = await axios.post(
+      `${HOST}/routines/${routine_id}/exercises`,
+      newExercise
+    );
+  } catch (e) {
+    console.log({ e });
+    err = e.response.data.detail;
+  }
+
+  console.log({ routineAPI: res });
+
+  return { data: res.data, err };
+}

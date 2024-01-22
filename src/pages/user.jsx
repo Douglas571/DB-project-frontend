@@ -2,36 +2,62 @@ import { useState } from 'react'
 import { Link } from "react-router-dom";
 import { useLocalStorage } from "@uidotdev/usehooks"
 
+import * as api from "@/util/api";
+
 import useStore from '@/store'
 
 
 export default function User() {
     const [user, _] = useLocalStorage("user", null)
 
+    const [error, setError] = useState('')
+
     const routines = useStore( state => state.routines )
-    const saveNewRoutine = useStore( state => state.saveNewRoutine )
+    const setRoutines = useStore( state => state.setRoutines )
 
     const [editing, setEditing] = useState(false)
 
-    function handleSaveRoutine(newRoutine) {
-        saveNewRoutine(newRoutine)
+    async function handleSaveRoutine(newRoutine) {
+
+        if (!newRoutine.title) {
+            setEditing(!editing)
+            return 
+        }
+        const res = await api.addNewRoutine(user, newRoutine);
+
+        console.log({res})
+
+        if (res.err) {
+            setError(res.err)
+            setTimeout(() => setError(''), 3000)
+        } else {
+            setRoutines(res.data)
+        }
+        
+        //setRoutine(newRoutine)
     }
+
+    let routineElements = routines.map( routine => {
+        return (
+            <div key={routine.id}>
+                <Link to={`/routines/${routine.id}`}>{routine.title}</Link>
+            </div>
+        )
+    })
+
+    if (routineElements.length == 0) {
+        routineElements = <div>No tienes rutinas, crea una nueva!!</div>    }
 
     return (
         <>
             <h1>Bienvenido {user.username}</h1>
             <h3>Rutinas <button onClick={() => setEditing(!editing)}>Agregar Rutina</button></h3>
             
-
+            <div>{error}</div>
             { editing && <RoutineEditor onSaveRoutine={handleSaveRoutine}/>}
+            
 
-            { routines.map( routine => {
-                return (
-                    <div>
-                        <Link to={`/routines/${routine._id}`}>{routine.title}</Link>
-                    </div>
-                )
-            })}
+            { routineElements }
         </>
     )
 }
@@ -45,17 +71,25 @@ function RoutineEditor({onSaveRoutine}) {
         const {name, value} = evt.target
         setNewRoutine({...newRoutine, [name]: value})
     }
+
     function handleSubmit(evt) {
         evt.preventDefault()
         onSaveRoutine(newRoutine)
     }
+
+    function handleChange(evt) {
+        const { name, value } = evt.target
+        // console.log({name, value})
+        setNewRoutine({...newRoutine, [name]: value})
+    }
+
     return (
         <>
             <h4>Nueva Rutina</h4>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor='title'>Nombre</label>
-                    <input type='text' name='title' value={newRoutine.title} onChange={handleChange}/>
+                    <input type='text' value={newRoutine.title} onChange={handleChange} name='title'/>
                 </div>
 
                 <div><button type='submit'>Guardar</button></div>

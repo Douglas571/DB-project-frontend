@@ -19,12 +19,29 @@ import Routines from './pages/routines'
 import RoutinesView from './pages/routinesView'
 import RoutineExerciseView from './pages/routineExerciseView'
 
+import * as api from "@/util/api";
+
 function App() {
     const [user, _] = useLocalStorage("user", null)
     const setStoreUser = useStore( store => store.setUser )
+    const setRoutines = useStore( store => store.setRoutines)
+
 
     useEffect(() => {
-        setStoreUser(user)
+      (async () => {
+        if (user) {
+          let res = await api.getRoutines(user)
+  
+          const routines = res.data
+  
+          console.log({useEffectRoutines: routines})
+          setRoutines(routines)
+        } else {
+          setRoutines([])
+        }
+      })()
+
+      setStoreUser(user)
     }, [user])
 
     const router = createBrowserRouter([

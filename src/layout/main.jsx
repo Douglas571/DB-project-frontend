@@ -5,8 +5,6 @@ function Menu() {
     const [token, setToken] = useLocalStorage("token", null)
     const [user, setUser] = useLocalStorage('user', null)
 
-    console.log({userLayout: user})
-
     function logout() {
         setToken(null)
         setUser(null)
