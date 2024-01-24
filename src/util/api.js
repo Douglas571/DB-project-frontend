@@ -26,6 +26,8 @@ export async function addNewRoutine(user, newRoutine) {
   let res;
   let err;
 
+  console.log({ newRoutine });
+
   try {
     res = await axios.post(`${HOST}/routines`, {
       user_id: user.username,

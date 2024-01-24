@@ -17,6 +17,8 @@ export default function User() {
 
     const [editing, setEditing] = useState(false)
 
+    console.log({routines})
+
     async function handleSaveRoutine(newRoutine) {
 
         if (!newRoutine.title) {

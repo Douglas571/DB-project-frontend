@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import * as api from "@/util/api";
@@ -19,9 +19,9 @@ export default function Routines () {
         console.log(res)
     }
 
-    let exercisesElements = routine?.exercises?.map( exercise => {
+    let exercisesElements = routine?.exercises?.map( (exercise, idx) => {
             return (
-                <div>
+                <div key={idx}>
                     <Link to={`exercise/${exercise._id}`}>{exercise.name}</Link>
                 </div>
             )
@@ -36,7 +36,7 @@ export default function Routines () {
     }
 
     return (
-        <>
+        <div>
             <h1>{routine.title}</h1>
 
             <ExerviseEditor onSave={handleNewExercise}/>
@@ -44,18 +44,30 @@ export default function Routines () {
             {
                 exercisesElements
             }
-        </>
+        </div>
     )
 }
 
 function ExerviseEditor({onSave}) {
     const [newExercise, setNewExercise] = useState({
+        name: 'push ups',
         unit: 'kg',
         sets: [
-                
+               { reps: 15, amount: 0 },
+               { reps: 13, amount: 0},
+               { reps: 8, amount: 0}
             ]
         }
     )
+
+    useEffect(() => {
+        if (newExercise.unit === 'sec') {
+            setNewExercise({
+                ...newExercise,
+                sets: []
+            })
+        }
+    }, [newExercise.unit])
 
     function handleChange(evt) {
         const { name, value } = evt.target
@@ -66,7 +78,7 @@ function ExerviseEditor({onSave}) {
         setNewExercise({...newExercise, sets: [
             ...newExercise.sets,
             {
-                rep: 0,
+                reps: 0,
                 amount: 0 
             }
         ]})
@@ -117,10 +129,10 @@ function ExerviseEditor({onSave}) {
                     <label>Repeticiones: </label>
                     { newExercise.sets.map(( set, idx ) => {
                         return (
-                            <div>
+                            <div key={idx}>
                                 <div>
                                     <label>{"#"+idx}: </label>
-                                    <input style={{width: "50px"}} type='number' name={"rep"} id={idx} value={set.rep} onChange={handleSetChange}/>
+                                    <input style={{width: "50px"}} type='number' name={"reps"} id={idx} value={set.reps} onChange={handleSetChange} disabled={newExercise.unit === 'sec'}/>
                                     <label> Peso/duración: </label>
                                     <input style={{width: "50px"}} type='number' name={"amount"} id={idx} value={set.amount} onChange={handleSetChange}/>
                                     <button onClick={() => handleDeleteSet(idx)}>Eliminar</button>
