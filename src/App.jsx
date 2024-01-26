@@ -25,6 +25,19 @@ function App() {
     const setStoreUser = useStore( store => store.setUser )
     const setRoutines = useStore( store => store.setRoutines)
 
+    async function init() {
+        const res = await api.getRoutines(user)
+
+        console.group('app.init')
+            console.log({returnedData: res})
+        console.groupEnd()
+
+        setRoutines(res.data)
+    }
+
+    useEffect(() => {
+        init()
+    }, [])
 
     useEffect(() => {
       (async () => {

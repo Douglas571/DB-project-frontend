@@ -44,6 +44,9 @@ const useStore = create((set, get) => ({
     return userRoutines;
   },
   setRoutines: (routines) => {
+    console.group("store.setRoutines");
+    console.log({ routines });
+    console.groupEnd();
     set((state) => ({ routines }));
   },
   updateRoutine: (routine, routine_id) => {

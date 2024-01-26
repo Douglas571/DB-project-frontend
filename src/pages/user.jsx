@@ -17,17 +17,6 @@ export default function User() {
 
     const [editing, setEditing] = useState(false)
 
-    // async function init() {
-    //     const data = await api.getRoutines(user)
-
-    //     console.group('init')
-    //         console.log({returnedData: data})
-    //     console.groupEnd()
-    // }
-
-    // useEffect(() => {
-    //     init()
-    // }, [])
 
 
     async function handleSaveRoutine(newRoutine) {

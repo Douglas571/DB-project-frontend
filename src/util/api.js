@@ -46,6 +46,10 @@ export async function addNewRoutine(user, newRoutine) {
 }
 
 export async function getRoutines(user) {
+  if (!user?.username) {
+    return { data: [], err: "there's not user" };
+  }
+
   console.group("api.getRoutine");
 
   let res;

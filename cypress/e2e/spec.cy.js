@@ -119,5 +119,23 @@ describe("User interactions", () => {
     let exercise = fakeRoutine.exercises[0];
 
     cy.get(`[data-test="routineView-exercise-${exercise.name}"]`).click();
+    cy.get('[data-test="exercise-name"]').should("contain", exercise.name);
+
+    // checking data
+    exercise.sets.forEach((set, idx) => {
+      cy.get(`[data-test="exercise-sets-${idx}-reps"]`).should(
+        "contain",
+        set.reps
+      );
+      cy.get(`[data-test="exercise-sets-${idx}-amount"]`).should(
+        "contain",
+        set.amount
+      );
+    });
+
+    // adding activity
+    cy.get('[data-test="exercise-add-activity"]').click();
+    cy.get(`[data-test="exercise-add-activity-0-reps"]`).type(set.reps);
+    cy.get(`[data-test="exercise-add-activity-0-reps"]`).type(set.reps);
   });
 });
