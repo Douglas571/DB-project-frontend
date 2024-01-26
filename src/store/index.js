@@ -34,6 +34,12 @@ const useStore = create((set, get) => ({
   setRoutines: (routines) => {
     set((state) => ({ routines }));
   },
+  updateRoutine: (routine, routine_id) => {
+    let routines = get().routines;
+    let idx = routines.findIndex((r) => r.id === routine_id);
+    routines[idx] = routine;
+    set((state) => ({ routines }));
+  },
   getExercise: (routineID, exerciseID) => {
     const routine = get().routines.find(({ _id }) => _id === Number(routineID));
     const exercise = routine.exercises.find(

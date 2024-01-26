@@ -11,8 +11,8 @@ function SingUp () {
     const [_, saveUser] = useLocalStorage("user", null)
 
     const [userData, setUserData] = useState({
-        username: 'randomguy' + Date.now(),
-        password: '123456787',
+        username: '', //'randomguy' + Date.now(),
+        password: '', //'123456787',
         birth_date: null,
         weight_kg: 0,
         height_cm: 0
@@ -45,7 +45,9 @@ function SingUp () {
                     value={userData.username}
                     type='text' 
                     name='username' 
-                    onChange={handleInput}/>
+                    onChange={handleInput}
+                    
+                    data-test="singup-username"/>
             </label>
         </div>
         <div>
@@ -55,7 +57,8 @@ function SingUp () {
                     value={userData.password}
                     type='text' 
                     name='password' 
-                    onChange={handleInput}/>
+                    onChange={handleInput}
+                    data-test="singup-password"/>
             </label>
         </div>
 
@@ -75,7 +78,7 @@ function SingUp () {
             </label>
         </div>
 
-        <button onClick={singUp}>Registrarce</button>
+        <button onClick={singUp} data-test="singup-regist-button">Registrarce</button>
     </>)
 }
 

@@ -15,15 +15,15 @@ function Menu() {
             { !token 
             ? 
             <>
-                <Link to={'/singup'}>Registrarce</Link>
+                <Link to={'/singup'} data-test="singup-button">Registrarce</Link>
                 <br/>
-                <Link to={'/singin'}>Iniciar sesión</Link>
+                <Link to={'/singin'} data-test="singin-button">Iniciar sesión</Link>
             </>
             : 
             <>
-                <Link onClick={logout}>Cerrar Sesión</Link>
+                <Link onClick={logout} data-test="close-session-button">Cerrar Sesión</Link>
                 <br/>
-                <Link to={'/user'}>Mi perfil ({user.username})</Link>
+                <Link to={'/user'} data-test="user-home-page-link">Mi perfil ({user.username})</Link>
             </>
             }
         </>

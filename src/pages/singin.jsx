@@ -11,8 +11,8 @@ function SingIn () {
     const [user, saveUser] = useLocalStorage("user", null)
 
     const [credentials, setCredentials] = useState({
-        username: 'douglas',
-        password: '12345'
+        username: '',
+        password: ''
     })
 
     useEffect(() => {
@@ -45,6 +45,7 @@ function SingIn () {
                     type='text' 
                     name='username' 
                     onChange={handleInput}
+                    data-test="singin-username"
                 />
             </label>
             </div>
@@ -56,10 +57,11 @@ function SingIn () {
                         type='text' 
                         name='password' 
                         onChange={handleInput}
+                        data-test="singin-password"
                     />
                 </label>
             </div>
-            <button onClick={singIn}>Inicias Sesión</button>
+            <button onClick={singIn} data-test="singin-login-button">Inicias Sesión</button>
         </>
     )
 }

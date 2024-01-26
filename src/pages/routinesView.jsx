@@ -8,6 +8,8 @@ export default function Routines () {
     const params = useParams()
     const routine = useStore( state => state.getRoutine(params.id) )
     const user = useStore( state => state.user )
+
+    const updateRoutine = useStore( state => state.updateRoutine )
     
     console.log({routine})
 
@@ -17,6 +19,8 @@ export default function Routines () {
 
         let res = await api.saveExercise(newExercise, params.id)
         console.log(res)
+
+        updateRoutine(res.data.routine, routine.id)
     }
 
     let exercisesElements = routine?.exercises?.map( (exercise, idx) => {
@@ -37,26 +41,22 @@ export default function Routines () {
 
     return (
         <div>
-            <h1>{routine.title}</h1>
+            <h1 data-test="routine-title">{routine.title}</h1>
 
             <ExerviseEditor onSave={handleNewExercise}/>
 
-            {
-                exercisesElements
-            }
+            <div data-test="routine-exercises-list">
+                {exercisesElements}
+            </div>
         </div>
     )
 }
 
 function ExerviseEditor({onSave}) {
     const [newExercise, setNewExercise] = useState({
-        name: 'push ups',
+        name: '',
         unit: 'kg',
-        sets: [
-               { reps: 15, amount: 0 },
-               { reps: 13, amount: 0},
-               { reps: 8, amount: 0}
-            ]
+        sets: []
         }
     )
 
@@ -106,6 +106,7 @@ function ExerviseEditor({onSave}) {
         evt.preventDefault()
 
         onSave(newExercise)
+        setNewExercise({ name: '', sets: []})
     }
 
     return (<div>
@@ -115,11 +116,17 @@ function ExerviseEditor({onSave}) {
             <div>
                 <div>
                     <label>Nombre: </label>
-                    <input type='text' name="name" value={newExercise.name} onChange={handleChange}/>
+                    <input type='text' 
+                        name="name" value={newExercise.name}
+                        onChange={handleChange}
+                        data-test="newExercise-name"/>
                 </div>
                 <div>
                     <label>Medidas: </label>          
-                    <select value={newExercise.unit} name="unit" onChange={handleChange}>
+                    <select value={newExercise.unit} 
+                        name="unit" 
+                        onChange={handleChange}
+                        data-test="newExercise-unit">
                         <option value="sec">Seg</option>
                         <option value="kg">Kg</option>
                         <option value="lb">Lb</option>
@@ -132,18 +139,26 @@ function ExerviseEditor({onSave}) {
                             <div key={idx}>
                                 <div>
                                     <label>{"#"+idx}: </label>
-                                    <input style={{width: "50px"}} type='number' name={"reps"} id={idx} value={set.reps} onChange={handleSetChange} disabled={newExercise.unit === 'sec'}/>
+                                    <input style={{width: "50px"}} type='number' 
+                                        name={"reps"} id={idx} value={set.reps} 
+                                        onChange={handleSetChange} 
+                                        disabled={newExercise.unit === 'sec'}
+                                        data-test={`newExercise-set-${idx}-reps`}/>
                                     <label> Peso/duración: </label>
-                                    <input style={{width: "50px"}} type='number' name={"amount"} id={idx} value={set.amount} onChange={handleSetChange}/>
-                                    <button onClick={() => handleDeleteSet(idx)}>Eliminar</button>
+                                    <input style={{width: "50px"}} type='number' 
+                                        name={"amount"} id={idx} value={set.amount} 
+                                        onChange={handleSetChange}
+                                        data-test={`newExercise-set-${idx}-amount`}/>
+                                    <button onClick={() => handleDeleteSet(idx)}
+                                    >Eliminar</button>
                                 </div>
                             </div>
                         )
                     })}
-                    <button onClick={addNewRepetition}>Agregar otra repetición</button>
+                    <button onClick={addNewRepetition} data-test="newExercise-new-set-button">Agregar otra repetición</button>
                 </div>
             </div>
-            <button onClick={handleSubmit}>Guardar</button>
+            <button onClick={handleSubmit} data-test="newExercise-save-button">Guardar</button>
         </div>
     </div>)
 }

@@ -15,7 +15,6 @@ import SingIn from './pages/singin'
 
 import UserHome from './pages/user'
 
-import Routines from './pages/routines'
 import RoutinesView from './pages/routinesView'
 import RoutineExerciseView from './pages/routineExerciseView'
 
@@ -64,10 +63,6 @@ function App() {
             {
               path: '/user',
               element: <UserHome/>
-            },
-            {
-              path: '/routines',
-              element: <Routines/>
             },
             {
               path: '/routines/:id',

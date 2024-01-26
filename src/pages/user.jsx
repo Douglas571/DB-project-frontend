@@ -42,7 +42,8 @@ export default function User() {
     let routineElements = routines.map( routine => {
         return (
             <div key={routine.id}>
-                <Link to={`/routines/${routine.id}`}>{routine.title}</Link>
+                <Link to={`/routines/${routine.id}`}
+                data-test={`user-routine-${routine.title}`}>{routine.title}</Link>
             </div>
         )
     })
@@ -52,14 +53,16 @@ export default function User() {
 
     return (
         <>
-            <h1>Bienvenido {user.username}</h1>
-            <h3>Rutinas <button onClick={() => setEditing(!editing)}>Agregar Rutina</button></h3>
+            <h1 data-test="user-home-greeting">Bienvenido {user.username}</h1>
+            <h3>Rutinas <button onClick={() => setEditing(!editing)} data-test="user-add-routine-button">Agregar Rutina</button></h3>
             
             <div>{error}</div>
             { editing && <RoutineEditor onSaveRoutine={handleSaveRoutine}/>}
             
 
-            { routineElements }
+            <div data-test="user-routine-list">
+                { routineElements }
+            </div>
         </>
     )
 }
@@ -91,10 +94,15 @@ function RoutineEditor({onSaveRoutine}) {
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor='title'>Nombre</label>
-                    <input type='text' value={newRoutine.title} onChange={handleChange} name='title'/>
+                    <input type='text' 
+                        value={newRoutine.title} 
+                        onChange={handleChange} 
+                        name='title'
+                        data-test="user-add-routine-title"/>
                 </div>
 
-                <div><button type='submit'>Guardar</button></div>
+                <div><button type='submit'
+                    data-test="user-add-routine-save-button">Guardar</button></div>
             </form>
         </>
     )
