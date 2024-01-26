@@ -1,7 +1,7 @@
 describe("User interactions", () => {
   const fakeUser = {
     username: "testUser_" + Date.now(),
-    password: "123456787",
+    password: "123",
     birth_date: null,
     weight_kg: 0,
     height_cm: 0,
@@ -104,6 +104,22 @@ describe("User interactions", () => {
         "contain",
         fakeExercise.name
       );
+    });
+  });
+
+  it("the user should be able to open exercise and add activities ", () => {
+    cy.get('[data-test="singin-button"]').click();
+    cy.get('[data-test="singin-username"]').type(fakeUser.username);
+    cy.get('[data-test="singin-password"]').type(fakeUser.password);
+    cy.get('[data-test="singin-login-button"]').click();
+    cy.get('[data-test="user-home-greeting"]').should(
+      "contain",
+      fakeUser.username
+    );
+
+    fakeRoutine.exercises.forEach((fakeExercise) => {
+      // go to routine page
+      cy.get(`[data-test="user-routine-${fakeRoutine.title}"]`).click();
     });
   });
 });
