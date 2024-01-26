@@ -24,9 +24,13 @@ export default function Routines () {
     }
 
     let exercisesElements = routine?.exercises?.map( (exercise, idx) => {
+        console.group('routineView - maping exercises')
+        console.log({exercise})
+        console.groupEnd()
             return (
-                <div key={idx}>
-                    <Link to={`exercise/${exercise._id}`}>{exercise.name}</Link>
+                <div key={idx} >
+                    <Link to={`exercise/${exercise.id}`}
+                        data-test={`routineView-exercise-${exercise.name}`}>{exercise.name}</Link>
                 </div>
             )
         })

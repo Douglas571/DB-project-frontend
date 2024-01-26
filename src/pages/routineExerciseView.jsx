@@ -6,13 +6,20 @@ export default function Exercises () {
 
     // TODO: Chenck when i don't have a exercise for the given id
     const params = useParams()
+    console.group('routineExerciseView - root')
+    console.log({params})
+ 
+    
     const exercise = useStore ( state => state.getExercise(params.id, params.exerciseID))
+    console.log({exercise})
 
-    if (exercise?._id === undefined) {
+    console.groupEnd()   
+
+    if (exercise?.id === undefined) {
         return (<h1>Este ejercicio no existe</h1>)
     }
 
-    const activity = useStore (state => state.getActivity(exercise._id))
+    const activity = useStore (state => state.getActivity(exercise.id))
 
     const activityElements = activity.length > 0 
         ? activity.map( act => {

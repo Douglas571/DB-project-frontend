@@ -46,6 +46,8 @@ export async function addNewRoutine(user, newRoutine) {
 }
 
 export async function getRoutines(user) {
+  console.group("api.getRoutine");
+
   let res;
   let err;
 
@@ -56,9 +58,15 @@ export async function getRoutines(user) {
     err = e.response.data.detail;
   }
 
-  console.log({ routineAPI: res });
+  let returnedData = {
+    data: res.data.filter((r) => r.user_id === user.username),
+    err,
+  };
 
-  return { data: res.data.filter((r) => r.user_id === user.id), err };
+  //console.log({ res, returnedData });
+  console.groupEnd();
+
+  return returnedData;
 }
 
 export async function saveExercise(newExercise, routine_id) {

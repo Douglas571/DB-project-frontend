@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from "react-router-dom";
 import { useLocalStorage } from "@uidotdev/usehooks"
 
@@ -17,7 +17,18 @@ export default function User() {
 
     const [editing, setEditing] = useState(false)
 
-    console.log({routines})
+    // async function init() {
+    //     const data = await api.getRoutines(user)
+
+    //     console.group('init')
+    //         console.log({returnedData: data})
+    //     console.groupEnd()
+    // }
+
+    // useEffect(() => {
+    //     init()
+    // }, [])
+
 
     async function handleSaveRoutine(newRoutine) {
 
@@ -39,7 +50,7 @@ export default function User() {
         //setRoutine(newRoutine)
     }
 
-    let routineElements = routines.map( routine => {
+    let routineElements = routines?.map( routine => {
         return (
             <div key={routine.id}>
                 <Link to={`/routines/${routine.id}`}
@@ -48,7 +59,7 @@ export default function User() {
         )
     })
 
-    if (routineElements.length == 0) {
+    if (routineElements?.length == 0) {
         routineElements = <div>No tienes rutinas, crea una nueva!!</div>    }
 
     return (

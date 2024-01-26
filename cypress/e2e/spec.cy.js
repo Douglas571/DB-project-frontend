@@ -34,11 +34,8 @@ describe("User interactions", () => {
     ],
   };
 
-  beforeEach(() => {
+  before(() => {
     cy.visit("/");
-  });
-
-  it("the user should be able to regist a new account, exit and enter again", () => {
     cy.get('[data-test="singup-button"]').click();
     cy.get('[data-test="singup-username"]').type(fakeUser.username);
     cy.get('[data-test="singup-password"]').type(fakeUser.password);
@@ -49,7 +46,25 @@ describe("User interactions", () => {
     );
 
     cy.get('[data-test="close-session-button"]').click();
+  });
 
+  beforeEach(() => {
+    cy.visit("/");
+
+    // singin
+    cy.get('[data-test="singin-button"]').click();
+    cy.get('[data-test="singin-username"]').type(fakeUser.username);
+    cy.get('[data-test="singin-password"]').type(fakeUser.password);
+    cy.get('[data-test="singin-login-button"]').click();
+    cy.get('[data-test="user-home-greeting"]').should(
+      "contain",
+      fakeUser.username
+    );
+  });
+
+  afterEach(() => {});
+
+  it.skip("the user should be able to regist a new account, exit and enter again", () => {
     cy.get('[data-test="singin-button"]').click();
     cy.get('[data-test="singin-username"]').type(fakeUser.username);
     cy.get('[data-test="singin-password"]').type(fakeUser.password);
@@ -61,15 +76,6 @@ describe("User interactions", () => {
   });
 
   it("the user should be able to create a routine and add exercises", () => {
-    cy.get('[data-test="singin-button"]').click();
-    cy.get('[data-test="singin-username"]').type(fakeUser.username);
-    cy.get('[data-test="singin-password"]').type(fakeUser.password);
-    cy.get('[data-test="singin-login-button"]').click();
-    cy.get('[data-test="user-home-greeting"]').should(
-      "contain",
-      fakeUser.username
-    );
-
     cy.get('[data-test="user-add-routine-button"]').click();
     cy.get('[data-test="user-add-routine-title"]').type(fakeRoutine.title);
     cy.get('[data-test="user-add-routine-save-button"]').click();
@@ -108,18 +114,10 @@ describe("User interactions", () => {
   });
 
   it("the user should be able to open exercise and add activities ", () => {
-    cy.get('[data-test="singin-button"]').click();
-    cy.get('[data-test="singin-username"]').type(fakeUser.username);
-    cy.get('[data-test="singin-password"]').type(fakeUser.password);
-    cy.get('[data-test="singin-login-button"]').click();
-    cy.get('[data-test="user-home-greeting"]').should(
-      "contain",
-      fakeUser.username
-    );
+    cy.get(`[data-test="user-routine-${fakeRoutine.title}"]`).click();
 
-    fakeRoutine.exercises.forEach((fakeExercise) => {
-      // go to routine page
-      cy.get(`[data-test="user-routine-${fakeRoutine.title}"]`).click();
-    });
+    let exercise = fakeRoutine.exercises[0];
+
+    cy.get(`[data-test="routineView-exercise-${exercise.name}"]`).click();
   });
 });
