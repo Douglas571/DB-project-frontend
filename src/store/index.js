@@ -3,35 +3,29 @@ import { create } from "zustand";
 const useStore = create((set, get) => ({
   user: {},
   routines: [],
-  activity: [
-    {
-      routine_id: 0,
-      exercise_id: 0,
-      reps: [10, 8, 4],
-    },
-    {
-      routine_id: 0,
-      exercise_id: 0,
-      reps: [10, 8, 4],
-    },
-    {
-      routine_id: 0,
-      exercise_id: 0,
-      reps: [10, 8, 4],
-    },
-    {
-      routine_id: 0,
-      exercise_id: 1,
-      reps: [5, 3, 1],
-    },
-  ],
+  activity: [],
+
+  loadData: (data) => {
+    set((_) => ({
+      routines: data.routines,
+    }));
+  },
+
   setUser: (user) => {
     set((_) => ({ user }));
   },
   getRoutine: (id) => {
-    return get().routines.find((routine) => routine.id == id);
+    console.group("store.getRoutine");
+    const routines = get().routines;
+    console.log(routines);
+    const userRoutines = routines.find((routine) => routine.id == id);
+    console.groupEnd();
+    return userRoutines;
   },
   setRoutines: (routines) => {
+    console.group("store.setRoutines");
+    console.log({ routines });
+    console.groupEnd();
     set((state) => ({ routines }));
   },
   updateRoutine: (routine, routine_id) => {
@@ -41,20 +35,38 @@ const useStore = create((set, get) => ({
     set((state) => ({ routines }));
   },
   getExercise: (routineID, exerciseID) => {
-    const routine = get().routines.find(({ _id }) => _id === Number(routineID));
-    const exercise = routine.exercises.find(
-      ({ _id }) => _id === Number(exerciseID)
-    );
+    console.group("store.getExercise");
+    console.log({ routineID, exerciseID });
 
+    // ! LOOK HERE!!
+
+    const ROUTINES = get().routines;
+    console.log({ ROUTINES });
+
+    const routine = ROUTINES.find(({ id }) => id === routineID);
+    console.log({ routine });
+
+    const exercise = routine?.exercises.find(({ id }) => id === exerciseID);
+    console.log({ exercise });
+
+    console.groupEnd();
     return exercise;
   },
   getActivity: (exerciseID) => {
     const activity = get().activity.filter(
       (act) => act.exercise_id === exerciseID
     );
-    if (!activity) return [];
 
     return activity;
+  },
+
+  setActivity: (activity) => {
+    console.group("store.setActiivty");
+    console.log({ activity });
+
+    set((state) => ({ activity }));
+
+    console.groupEnd();
   },
 }));
 

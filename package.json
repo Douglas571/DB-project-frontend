@@ -11,12 +11,15 @@
   "dependencies": {
     "@uidotdev/usehooks": "^2.4.1",
     "axios": "^1.6.5",
+    "chart.js": "^4.4.1",
     "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.20.1",
     "zustand": "^4.4.7"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.0",
     "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^14.0.0",
     "@vitejs/plugin-react": "^4.1.0",

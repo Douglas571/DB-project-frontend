@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from "react-router-dom";
 import { useLocalStorage } from "@uidotdev/usehooks"
 
@@ -17,8 +17,6 @@ export default function User() {
 
     const [editing, setEditing] = useState(false)
 
-    console.log({routines})
-
     async function handleSaveRoutine(newRoutine) {
 
         if (!newRoutine.title) {
@@ -36,19 +34,37 @@ export default function User() {
             setRoutines(res.data)
         }
         
+        setEditing(false)
         //setRoutine(newRoutine)
     }
 
-    let routineElements = routines.map( routine => {
+    async function handleDeleteRoutine(routine) {
+        console.log({deleteThisRoutine: routine})
+
+        let res = await api.deleteRoutine(user, routine)
+
+        setRoutines(res.data)
+    }
+
+    let routineElements = routines?.map( routine => {
         return (
-            <div key={routine.id}>
-                <Link to={`/routines/${routine.id}`}
-                data-test={`user-routine-${routine.title}`}>{routine.title}</Link>
-            </div>
+            <tr key={routine.id}>
+                <td>
+                    <Link to={`/routines/${routine.id}`}
+                        data-test={`user-routine-${routine.title}`}>{routine.title} </Link>
+                </td>
+                <td>
+                    {routine?.exercises?.length || 0}
+                </td>
+                <td>
+                    <button onClick={() => handleDeleteRoutine(routine)}>Eliminar</button>
+                </td>
+            </tr>
         )
     })
 
-    if (routineElements.length == 0) {
+
+    if (routineElements?.length == 0) {
         routineElements = <div>No tienes rutinas, crea una nueva!!</div>    }
 
     return (
@@ -60,9 +76,16 @@ export default function User() {
             { editing && <RoutineEditor onSaveRoutine={handleSaveRoutine}/>}
             
 
-            <div data-test="user-routine-list">
+            <table data-test="user-routine-list" border={1}>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Numero de ejercicios</th>
+                        <th></th>
+                    </tr>
+                </thead>
                 { routineElements }
-            </div>
+            </table>
         </>
     )
 }
@@ -93,7 +116,7 @@ function RoutineEditor({onSaveRoutine}) {
             <h4>Nueva Rutina</h4>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label htmlFor='title'>Nombre</label>
+                    <label htmlFor='title'>Nombre: </label>
                     <input type='text' 
                         value={newRoutine.title} 
                         onChange={handleChange} 
@@ -104,6 +127,7 @@ function RoutineEditor({onSaveRoutine}) {
                 <div><button type='submit'
                     data-test="user-add-routine-save-button">Guardar</button></div>
             </form>
+            <br/>
         </>
     )
 }

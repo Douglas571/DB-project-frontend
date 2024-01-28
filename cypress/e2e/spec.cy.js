@@ -20,6 +20,30 @@ describe("User interactions", () => {
           { reps: 13, amount: 0 },
           { reps: 8, amount: 0 },
         ],
+
+        activity: [
+          {
+            sets: [
+              { reps: 5, amount: 0 },
+              { reps: 2, amount: 0 },
+              { reps: 8, amount: 0 },
+            ],
+          },
+          {
+            sets: [
+              { reps: 5, amount: 0 },
+              { reps: 2, amount: 0 },
+              { reps: 8, amount: 0 },
+            ],
+          },
+          {
+            sets: [
+              { reps: 5, amount: 0 },
+              { reps: 2, amount: 0 },
+              { reps: 8, amount: 0 },
+            ],
+          },
+        ],
       },
       {
         name: "plank",
@@ -30,15 +54,35 @@ describe("User interactions", () => {
           { reps: 0, amount: 20 },
           { reps: 0, amount: 15 },
         ],
+        activity: [
+          {
+            sets: [
+              { reps: 0, amount: 40 },
+              { reps: 0, amount: 30 },
+              { reps: 0, amount: 20 },
+            ],
+          },
+          {
+            sets: [
+              { reps: 0, amount: 45 },
+              { reps: 0, amount: 34 },
+              { reps: 0, amount: 23 },
+            ],
+          },
+          {
+            sets: [
+              { reps: 0, amount: 47 },
+              { reps: 0, amount: 37 },
+              { reps: 0, amount: 26 },
+            ],
+          },
+        ],
       },
     ],
   };
 
-  beforeEach(() => {
+  before(() => {
     cy.visit("/");
-  });
-
-  it("the user should be able to regist a new account, exit and enter again", () => {
     cy.get('[data-test="singup-button"]').click();
     cy.get('[data-test="singup-username"]').type(fakeUser.username);
     cy.get('[data-test="singup-password"]').type(fakeUser.password);
@@ -49,7 +93,25 @@ describe("User interactions", () => {
     );
 
     cy.get('[data-test="close-session-button"]').click();
+  });
 
+  beforeEach(() => {
+    cy.visit("/");
+
+    // singin
+    cy.get('[data-test="singin-button"]').click();
+    cy.get('[data-test="singin-username"]').type(fakeUser.username);
+    cy.get('[data-test="singin-password"]').type(fakeUser.password);
+    cy.get('[data-test="singin-login-button"]').click();
+    cy.get('[data-test="user-home-greeting"]').should(
+      "contain",
+      fakeUser.username
+    );
+  });
+
+  afterEach(() => {});
+
+  it.skip("the user should be able to regist a new account, exit and enter again", () => {
     cy.get('[data-test="singin-button"]').click();
     cy.get('[data-test="singin-username"]').type(fakeUser.username);
     cy.get('[data-test="singin-password"]').type(fakeUser.password);
@@ -61,15 +123,6 @@ describe("User interactions", () => {
   });
 
   it("the user should be able to create a routine and add exercises", () => {
-    cy.get('[data-test="singin-button"]').click();
-    cy.get('[data-test="singin-username"]').type(fakeUser.username);
-    cy.get('[data-test="singin-password"]').type(fakeUser.password);
-    cy.get('[data-test="singin-login-button"]').click();
-    cy.get('[data-test="user-home-greeting"]').should(
-      "contain",
-      fakeUser.username
-    );
-
     cy.get('[data-test="user-add-routine-button"]').click();
     cy.get('[data-test="user-add-routine-title"]').type(fakeRoutine.title);
     cy.get('[data-test="user-add-routine-save-button"]').click();
@@ -108,25 +161,72 @@ describe("User interactions", () => {
   });
 
   it("the user should be able to open exercise and add activities ", () => {
-    cy.get('[data-test="singin-button"]').click();
-    cy.get('[data-test="singin-username"]').type(fakeUser.username);
-    cy.get('[data-test="singin-password"]').type(fakeUser.password);
-    cy.get('[data-test="singin-login-button"]').click();
-    cy.get('[data-test="user-home-greeting"]').should(
-      "contain",
-      fakeUser.username
-    );
+    cy.get(`[data-test="user-routine-${fakeRoutine.title}"]`).click();
 
-    fakeRoutine.exercises.forEach((fakeExercise) => {
-      // go to routine page
+    let exercise = fakeRoutine.exercises[0];
 
-      /*
-        each row has an index, so the first one should
-        be the last activity added. 
-      
-      */
+    // fakeRoutine.activity.forEach((act, idx) => {
+    //   cy.get(`[data-test="new-activity-set-${idx}-amount"]`).type(act.sets.reps);
+    //   cy.get(`[data-test="new-activity-set-${idx}-amount"]`).click(act.sets.amount);
+    // });
 
-      cy.get(`[data-test="user-routine-${fakeRoutine.title}"]`).click();
+    fakeRoutine.exercises.forEach((exercise, exerciseIndex) => {
+      cy.get(`[data-test="routineView-exercise-${exercise.name}"]`).click();
+      cy.get('[data-test="exercise-name"]').should("contain", exercise.name);
+
+      // checking data
+      exercise.sets.forEach((set, idx) => {
+        cy.get(`[data-test="exercise-sets-${idx}-reps"]`).should(
+          "contain",
+          set.reps
+        );
+        cy.get(`[data-test="exercise-sets-${idx}-amount"]`).should(
+          "contain",
+          set.amount
+        );
+      });
+
+      // adding activity
+      exercise.activity.forEach((act, actIndex) => {
+        // add the exercise
+        cy.get('[data-test="exercise-add-activity"]').click();
+
+        act.sets.forEach((set, idx) => {
+          if (exercise.unit !== "sec") {
+            cy.get(`[data-test="new-activity-set-${idx}-reps"]`).type(set.reps);
+          }
+          cy.get(`[data-test="new-activity-set-${idx}-amount"]`).type(
+            set.amount
+          );
+        });
+
+        cy.get('[data-test="new-activity-save-button"]').click();
+        cy.get('[data-test="activity-list"]').should(
+          "contain",
+          new Date().toLocaleDateString()
+        );
+
+        // checking activity
+        act.sets.forEach((set, idx) => {
+          cy.get(`[data-test="activity-${0}-set-${idx}-reps"]`).should(
+            "have.text",
+            set.reps
+          );
+          cy.get(`[data-test="activity-${0}-set-${idx}-amount"]`).should(
+            "have.text",
+            set.amount
+          );
+        });
+
+        // delete the activity
+        cy.get(`[data-test="activity-${0}-delete-button"]`).click();
+        cy.get(`[data-test="activity-${0}`).should("not.exist");
+      });
+
+      // going back to another exercise
+      cy.go("back");
     });
+
+    // ! <===========================> !
   });
 });

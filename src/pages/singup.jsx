@@ -78,7 +78,7 @@ function SingUp () {
             </label>
         </div>
 
-        <button onClick={singUp} data-test="singup-regist-button">Registrarce</button>
+        <button onClick={singUp} data-test="singup-regist-button">Registrarse</button>
     </>)
 }
 
