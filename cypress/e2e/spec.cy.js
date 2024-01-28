@@ -20,6 +20,30 @@ describe("User interactions", () => {
           { reps: 13, amount: 0 },
           { reps: 8, amount: 0 },
         ],
+
+        activity: [
+          {
+            sets: [
+              { reps: 5, amount: 0 },
+              { reps: 2, amount: 0 },
+              { reps: 8, amount: 0 },
+            ],
+          },
+          {
+            sets: [
+              { reps: 5, amount: 0 },
+              { reps: 2, amount: 0 },
+              { reps: 8, amount: 0 },
+            ],
+          },
+          {
+            sets: [
+              { reps: 5, amount: 0 },
+              { reps: 2, amount: 0 },
+              { reps: 8, amount: 0 },
+            ],
+          },
+        ],
       },
       {
         name: "plank",
@@ -135,7 +159,28 @@ describe("User interactions", () => {
 
     // adding activity
     cy.get('[data-test="exercise-add-activity"]').click();
-    cy.get(`[data-test="exercise-add-activity-0-reps"]`).type(set.reps);
-    cy.get(`[data-test="exercise-add-activity-0-reps"]`).type(set.reps);
+
+    // fakeRoutine.activity.forEach((act, idx) => {
+    //   cy.get(`[data-test="new-activity-set-${idx}-amount"]`).type(act.sets.reps);
+    //   cy.get(`[data-test="new-activity-set-${idx}-amount"]`).click(act.sets.amount);
+    // });
+
+    let act = fakeRoutine.exercises[0].activity[0];
+
+    act.sets.forEach((set, idx) => {
+      cy.get(`[data-test="new-activity-set-${idx}-reps"]`).type(set.reps);
+      cy.get(`[data-test="new-activity-set-${idx}-amount"]`).type(set.amount);
+    });
+    cy.get('[data-test="new-activity-save-button"]').click();
+
+    cy.get('[data-test="activity-list"]').should(
+      "contain",
+      new Date().toLocaleDateString()
+    );
+
+    act.sets.forEach((set, idx) => {
+      // !how the fuck do i get the id!!
+      cy.get(`[data-test="activity-${act.id}-set-${idx}"]`);
+    });
   });
 });

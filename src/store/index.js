@@ -3,28 +3,7 @@ import { create } from "zustand";
 const useStore = create((set, get) => ({
   user: {},
   routines: [],
-  activity: [
-    {
-      routine_id: 0,
-      exercise_id: 0,
-      reps: [10, 8, 4],
-    },
-    {
-      routine_id: 0,
-      exercise_id: 0,
-      reps: [10, 8, 4],
-    },
-    {
-      routine_id: 0,
-      exercise_id: 0,
-      reps: [10, 8, 4],
-    },
-    {
-      routine_id: 0,
-      exercise_id: 1,
-      reps: [5, 3, 1],
-    },
-  ],
+  activity: [],
 
   loadData: (data) => {
     set((_) => ({
@@ -80,6 +59,15 @@ const useStore = create((set, get) => ({
     if (!activity) return [];
 
     return activity;
+  },
+
+  setActivity: (activity) => {
+    console.group("store.setActiivty");
+    console.log({ activity });
+
+    set((state) => ({ activity }));
+
+    console.groupEnd();
   },
 }));
 

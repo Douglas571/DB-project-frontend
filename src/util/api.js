@@ -91,3 +91,41 @@ export async function saveExercise(newExercise, routine_id) {
 
   return { data: res.data, err };
 }
+
+console.log();
+
+export async function saveActivity(activity) {
+  console.group("API.saveActivity");
+  let res;
+  let toReturn;
+  let toSend = activity;
+
+  console.log({ toSend });
+
+  try {
+    res = await axios.post(`${HOST}/activities`, toSend);
+
+    toReturn = { data: res.data };
+  } catch (err) {
+    console.log({ err });
+    toReturn.err = e;
+  }
+
+  console.log({ toReturn });
+  console.groupEnd();
+
+  return toReturn;
+}
+
+export async function getActivities() {
+  let toReturn = {};
+
+  try {
+    const res = await axios.get(`${HOST}/activities`);
+    toReturn.data = res.data;
+  } catch (err) {
+    toReturn.err = err;
+  }
+
+  return toReturn;
+}

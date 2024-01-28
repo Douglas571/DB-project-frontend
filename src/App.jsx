@@ -24,18 +24,27 @@ function App() {
     const [user, _] = useLocalStorage("user", null)
     const setStoreUser = useStore( store => store.setUser )
     const setRoutines = useStore( store => store.setRoutines)
+    const setActivity = useStore( state => state.setActivity)
 
     async function init() {
-        const res = await api.getRoutines(user)
+        console.log('INIT!!')
+        let { data: routines } = await api.getRoutines(user)
+        let { data: activities} = await api.getActivities()
+		
 
-        console.group('app.init')
-            console.log({returnedData: res})
+        console.group('ROOT.init')
+          console.log({ routines, activities})
+
         console.groupEnd()
 
-        setRoutines(res.data)
+        setRoutines(routines)
+
+        setActivity(activities)
     }
 
     useEffect(() => {
+      console.log("INIT USE EFFECT")
+
         init()
     }, [])
 
