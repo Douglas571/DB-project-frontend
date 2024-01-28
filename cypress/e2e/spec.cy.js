@@ -119,6 +119,13 @@ describe("User interactions", () => {
 
     fakeRoutine.exercises.forEach((fakeExercise) => {
       // go to routine page
+
+      /*
+        each row has an index, so the first one should
+        be the last activity added. 
+      
+      */
+
       cy.get(`[data-test="user-routine-${fakeRoutine.title}"]`).click();
     });
   });
