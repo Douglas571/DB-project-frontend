@@ -54,6 +54,29 @@ describe("User interactions", () => {
           { reps: 0, amount: 20 },
           { reps: 0, amount: 15 },
         ],
+        activity: [
+          {
+            sets: [
+              { reps: 0, amount: 40 },
+              { reps: 0, amount: 30 },
+              { reps: 0, amount: 20 },
+            ],
+          },
+          {
+            sets: [
+              { reps: 0, amount: 45 },
+              { reps: 0, amount: 34 },
+              { reps: 0, amount: 23 },
+            ],
+          },
+          {
+            sets: [
+              { reps: 0, amount: 47 },
+              { reps: 0, amount: 37 },
+              { reps: 0, amount: 26 },
+            ],
+          },
+        ],
       },
     ],
   };
@@ -142,45 +165,67 @@ describe("User interactions", () => {
 
     let exercise = fakeRoutine.exercises[0];
 
-    cy.get(`[data-test="routineView-exercise-${exercise.name}"]`).click();
-    cy.get('[data-test="exercise-name"]').should("contain", exercise.name);
-
-    // checking data
-    exercise.sets.forEach((set, idx) => {
-      cy.get(`[data-test="exercise-sets-${idx}-reps"]`).should(
-        "contain",
-        set.reps
-      );
-      cy.get(`[data-test="exercise-sets-${idx}-amount"]`).should(
-        "contain",
-        set.amount
-      );
-    });
-
-    // adding activity
-    cy.get('[data-test="exercise-add-activity"]').click();
-
     // fakeRoutine.activity.forEach((act, idx) => {
     //   cy.get(`[data-test="new-activity-set-${idx}-amount"]`).type(act.sets.reps);
     //   cy.get(`[data-test="new-activity-set-${idx}-amount"]`).click(act.sets.amount);
     // });
 
-    let act = fakeRoutine.exercises[0].activity[0];
+    fakeRoutine.exercises.forEach((exercise, exerciseIndex) => {
+      cy.get(`[data-test="routineView-exercise-${exercise.name}"]`).click();
+      cy.get('[data-test="exercise-name"]').should("contain", exercise.name);
 
-    act.sets.forEach((set, idx) => {
-      cy.get(`[data-test="new-activity-set-${idx}-reps"]`).type(set.reps);
-      cy.get(`[data-test="new-activity-set-${idx}-amount"]`).type(set.amount);
+      // checking data
+      exercise.sets.forEach((set, idx) => {
+        cy.get(`[data-test="exercise-sets-${idx}-reps"]`).should(
+          "contain",
+          set.reps
+        );
+        cy.get(`[data-test="exercise-sets-${idx}-amount"]`).should(
+          "contain",
+          set.amount
+        );
+      });
+
+      // adding activity
+      exercise.activity.forEach((act, actIndex) => {
+        // add the exercise
+        cy.get('[data-test="exercise-add-activity"]').click();
+        act.sets.forEach((set, idx) => {
+          if (exercise.unit !== "sec") {
+            cy.get(`[data-test="new-activity-set-${idx}-reps"]`).type(set.reps);
+          }
+          cy.get(`[data-test="new-activity-set-${idx}-amount"]`).type(
+            set.amount
+          );
+        });
+
+        cy.get('[data-test="new-activity-save-button"]').click();
+        cy.get('[data-test="activity-list"]').should(
+          "contain",
+          new Date().toLocaleDateString()
+        );
+
+        // checking activity
+        act.sets.forEach((set, idx) => {
+          cy.get(`[data-test="activity-${0}-set-${idx}-reps"]`).should(
+            "have.text",
+            set.reps
+          );
+          cy.get(`[data-test="activity-${0}-set-${idx}-amount"]`).should(
+            "have.text",
+            set.amount
+          );
+        });
+
+        // delete the activity
+        cy.get(`[data-test="activity-${0}-delete-button"]`).click();
+        cy.get(`[data-test="activity-${0}`).should("not.exist");
+      });
+
+      // going back to another exercise
+      cy.go("back");
     });
-    cy.get('[data-test="new-activity-save-button"]').click();
 
-    cy.get('[data-test="activity-list"]').should(
-      "contain",
-      new Date().toLocaleDateString()
-    );
-
-    act.sets.forEach((set, idx) => {
-      // !how the fuck do i get the id!!
-      cy.get(`[data-test="activity-${act.id}-set-${idx}"]`);
-    });
+    // ! <===========================> !
   });
 });

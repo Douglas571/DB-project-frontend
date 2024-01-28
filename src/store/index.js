@@ -56,7 +56,6 @@ const useStore = create((set, get) => ({
     const activity = get().activity.filter(
       (act) => act.exercise_id === exerciseID
     );
-    if (!activity) return [];
 
     return activity;
   },

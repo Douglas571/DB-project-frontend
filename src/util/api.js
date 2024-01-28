@@ -129,3 +129,16 @@ export async function getActivities() {
 
   return toReturn;
 }
+
+export async function deleteActivity(activity) {
+  let toReturn = {};
+
+  try {
+    const res = await axios.delete(`${HOST}/activities/${activity.id}`);
+    toReturn.data = res.data;
+  } catch (err) {
+    toReturn.err = err;
+  }
+
+  return toReturn;
+}
