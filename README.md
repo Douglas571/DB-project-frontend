@@ -1,9 +1,9 @@
 # Planificador de Rutinas de Ejercicio
 
-Proyecto final para la asignatura de sistemas avanzados de base de datos.
+Aplicación Web para el manejo de rutinas y ejercicios. Proyecto académico para la asignatura "Sistemas Avanzados de Bases de Datos".
 [Video Explicativo](https://github.com/SafdarJamal/vite-template-react/blob/main/LICENSE) disponible en youtube.
 
-Integrantes:
+## Integrantes:
 
 - Douglas Socorro 29.748.656
 - Benjamín Alastre 29.712.778
