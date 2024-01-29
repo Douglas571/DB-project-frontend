@@ -131,9 +131,9 @@ function ExerviseEditor({onSave}) {
 						name="unit" 
 						onChange={handleChange}
 						data-test="newExercise-unit">
-						<option value="sec">Seg</option>
-						<option value="kg">Kg</option>
-						<option value="lb">Lb</option>
+						<option value="sec">Segundos</option>
+						<option value="kg">Kilogramos</option>
+						<option value="lb">Libras</option>
 					</select>
 				</div>
 				<div>

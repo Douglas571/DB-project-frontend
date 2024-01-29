@@ -13,7 +13,7 @@ describe("User interactions", () => {
     exercises: [
       {
         name: "push ups",
-        selectUnit: "Kg",
+        selectUnit: "Kilogramos",
         unit: "kg",
         sets: [
           { reps: 15, amount: 0 },
@@ -47,7 +47,7 @@ describe("User interactions", () => {
       },
       {
         name: "plank",
-        selectUnit: "Seg",
+        selectUnit: "Segundos",
         unit: "sec",
         sets: [
           { reps: 0, amount: 30 },
