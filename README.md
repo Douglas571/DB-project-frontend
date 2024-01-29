@@ -1,4 +1,4 @@
-# Planificador de Rutinas de Ejercicio
+# Planificador de Rutinas de Ejercicio (Frontend)
 
 Aplicación Web para el manejo de rutinas y ejercicios. Proyecto académico para la asignatura "Sistemas Avanzados de Bases de Datos".
 [Video Explicativo](https://www.youtube.com/watch?v=u0FJ0NSiQzg&feature=youtu.be) disponible en youtube.
