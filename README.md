@@ -1,7 +1,7 @@
 # Planificador de Rutinas de Ejercicio
 
 Aplicación Web para el manejo de rutinas y ejercicios. Proyecto académico para la asignatura "Sistemas Avanzados de Bases de Datos".
-[Video Explicativo](https://github.com/SafdarJamal/vite-template-react/blob/main/LICENSE) disponible en youtube.
+[Video Explicativo](https://www.youtube.com/watch?v=u0FJ0NSiQzg&feature=youtu.be) disponible en youtube.
 
 ## Integrantes:
 
